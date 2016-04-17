@@ -1,0 +1,19 @@
+{
+  "name": "webscreensaver",
+  "version": "0.0.1",
+  "description": "A jQuery web based screensaver that rotates through specified videos.",
+  "main": "src/webScreenSaver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juicetan/webScreenSaver.git"
+  },
+  "author": "Juicetan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juicetan/webScreenSaver/issues"
+  },
+  "homepage": "https://github.com/Juicetan/webScreenSaver#readme"
+}
