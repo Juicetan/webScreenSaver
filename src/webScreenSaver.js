@@ -1,11 +1,15 @@
 ;(function(window,document,Math,$,undefined){
   var defaults = {
-    configPath: '.',
     videos: [],
     videoDuration: -1,
+    interval: 2*60*1000,
+    stagnantDelay: 5000,
+    stagnantTrigger: true
   };
-
   var config = {};
+  var layer1 = null;
+  var layer2 = null;
+  var stagnantTimeout = null;
 
   var util = {
     randomInt:function(min,max){
@@ -20,7 +24,10 @@
         class: 'vidcon',
         autoplay: 'autoplay'
       }),
-      setVideo: function(url){
+      setVideo: function(vidSrcObj){
+        var fragment = document.createDocumentFragment();
+        var extKeys = Object.keys(vidSrcObj);
+
         var src = $("<source></source>",{
           type: "video/webm",
           src: url
@@ -32,11 +39,45 @@
     return vidCon;
   };
 
+  var toggleVideos = function(){
+    console.log('> toggling');
+  };
+
+  var startRotation = function(){
+    console.log('> hrmm');
+  };
+
+  var startWindowMonitor = function(){
+    stagnantTimeout = setTimeout(function(){
+      startRotation();
+    },config.stagnantDelay);
+
+    $(window).on('click mousemove mousedown keydown',function(){
+      window.clearTimeout(stagnantTimeout);
+      stagnantTimeout = setTimeout(function(){
+        startRotation();
+      },config.stagnantDelay);
+    });
+  };
+
+
+
+
   $['webScreenSaver'] = function(opts){
     config = $.extend({},defaults,opts);
-    var test = newVidCon();
-    $('body').append(test.$);
+    layer1 = newVidCon();
+    layer2 = newVidCon();
 
-    test.setVideo("http://screensaver.justinlam.ca/res/london-night.webm");
+    stagnantTimeout = null;
+    if(config.stagnantTrigger){
+      startWindowMonitor();
+    }
+
+
+    //$('body').append(test.$);
+    //test.setVideo("http://screensaver.justinlam.ca/res/london-night.webm");
+
+    return this;
   };
+
 })(window,document,Math,jQuery);
