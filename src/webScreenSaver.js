@@ -19,8 +19,9 @@
 
   var newVidCon = function(){
     var vidCon = {
+      transitionDuration: 1000,
       $:$("<video></video>",{
-        style: "min-width:100%;min-height:100%;width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);",
+        style: "min-width:100%;min-height:100%;width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
         class: 'vidcon',
         autoplay: 'autoplay'
       }),
@@ -28,12 +29,28 @@
         var fragment = document.createDocumentFragment();
         var extKeys = Object.keys(vidSrcObj);
 
-        var src = $("<source></source>",{
-          type: "video/webm",
-          src: url
-        });
-        this.$.html(src);
+        for(var i = 0; i < extKeys.length; i++){
+          (function(index){
+            var ext = extKeys[index];
+            var src = $("<source></source>",{
+              type: "video/"+ext,
+              src: vidSrcObj[ext]
+            });
+            fragment.appendChild(src[0]);
+          })(i);
+        }
+        this.$.html(fragment);
       },
+      fadeIn: function(){
+        this.$.animate({
+          opacity: 1
+        },this.transitionDuration);
+      },
+      fadeOut: function(){
+        this.$.animate({
+          opacity: 0
+        },this.transitionDuration);
+      }
     };
 
     return vidCon;
