@@ -19,6 +19,7 @@
 
   var newVidCon = function(){
     var vidCon = {
+      target: $('body'),
       transitionDuration: 1000,
       $:$("<video></video>",{
         style: "min-width:100%;min-height:100%;width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
@@ -42,6 +43,7 @@
         this.$.html(fragment);
       },
       fadeIn: function(){
+        this.target.append(this.$);
         this.$.animate({
           opacity: 1
         },this.transitionDuration);
@@ -50,6 +52,7 @@
         this.$.animate({
           opacity: 0
         },this.transitionDuration);
+        this.$.remove();
       }
     };
 
