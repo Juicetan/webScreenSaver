@@ -15,7 +15,7 @@ var paths = {
   workingDir: './',
   buildDir: './.tmp/',
   builtDir: './dist/',
-  scripts: 'src/**/*.js',
+  scripts: 'src/webScreenSaver.js',
   updatePath: './dist/**/*.html'
 };
 
