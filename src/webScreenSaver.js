@@ -7,9 +7,9 @@
     stagnantTrigger: true
   };
   var config = {};
-  var layer1 = null;
-  var layer2 = null;
+  var currentVid = null;
   var stagnantTimeout = null;
+  var isRunning = false;
 
   var util = {
     randomInt:function(min,max){
@@ -43,16 +43,29 @@
         this.$.html(fragment);
       },
       fadeIn: function(){
+        var def = $.Deferred();
+
         this.target.append(this.$);
         this.$.animate({
           opacity: 1
-        },this.transitionDuration);
+        },this.transitionDuration,function(){
+          def.resolve();
+        });
+
+        return def.promise();
       },
       fadeOut: function(){
+        var obj = this;
+        var def = $.Deferred();
+
         this.$.animate({
           opacity: 0
-        },this.transitionDuration);
-        this.$.remove();
+        },this.transitionDuration,function(){
+          obj.$.remove();
+          def.resolve();
+        });
+
+        return def.promise();
       }
     };
 
@@ -60,42 +73,59 @@
   };
 
   var toggleVideos = function(){
-    console.log('> toggling');
+    var def = $.Deferred();
+    var randIndex = util.randomInt(0,config.videos.length-1);
+    var vidSrc = config.videos[randIndex];
+
+    var tmpVid = newVidCon();
+    tmpVid.setVideo(vidSrc);
+    tmpVid.fadeIn().then(function(){
+      currentVid = tmpVid;
+      def.resolve(currentVid);
+    });
+    if(currentVid){
+      currentVid.fadeOut();
+    }
+
+    return def.promise();
   };
 
-  var startRotation = function(){
-    console.log('> hrmm');
+  var startSaver = function(){
+    isRunning = true;
+    toggleVideos().then(function(newVid){
+
+    });
+  };
+
+  var stopSaver = function(){
+    isRunning = false;
+    if(currentVid){
+      currentVid.$.remove();
+      currentVid = null;
+    }
   };
 
   var startWindowMonitor = function(){
     stagnantTimeout = setTimeout(function(){
-      startRotation();
+      startSaver();
     },config.stagnantDelay);
 
     $(window).on('click mousemove mousedown keydown',function(){
       window.clearTimeout(stagnantTimeout);
+      stopSaver();
       stagnantTimeout = setTimeout(function(){
-        startRotation();
+        startSaver();
       },config.stagnantDelay);
     });
   };
 
-
-
-
   $['webScreenSaver'] = function(opts){
     config = $.extend({},defaults,opts);
-    layer1 = newVidCon();
-    layer2 = newVidCon();
 
     stagnantTimeout = null;
     if(config.stagnantTrigger){
       startWindowMonitor();
     }
-
-
-    //$('body').append(test.$);
-    //test.setVideo("http://screensaver.justinlam.ca/res/london-night.webm");
 
     return this;
   };
