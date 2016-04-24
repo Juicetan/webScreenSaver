@@ -42,14 +42,17 @@ var newVidCon = function(){
       this.$.html(fragment);
     },
     fadeIn: function(){
+      var obj = this;
       var def = $.Deferred();
 
-      this.target.append(this.$);
-      this.$.animate({
-        opacity: 1
-      },this.transitionDuration,function(){
-        def.resolve();
+      this.$.on('loadeddata',function(){
+        obj.$.animate({
+          opacity: 1
+        },obj.transitionDuration,function(){
+          def.resolve();
+        });
       });
+      this.target.append(this.$);
 
       return def.promise();
     },
