@@ -95,7 +95,14 @@ var toggleVideos = function(){
 var startSaver = function(){
   isRunning = true;
   toggleVideos().then(function(newVid){
-
+    var durMilli = (newVid.$[0].duration - newVid.$[0].currentTime)*1000;
+    var timeout = durMilli < config.interval? durMilli:config.interval;
+    timeout = timeout - 5000;
+    setTimeout(function(){
+      if(isRunning){
+        startSaver();
+      }
+    },timeout);
   });
 };
 
