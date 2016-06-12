@@ -82,12 +82,12 @@ var toggleVideos = function(){
   var tmpVid = newVidCon();
   tmpVid.setVideo(vidSrc);
   tmpVid.fadeIn().then(function(){
+    if(currentVid){
+      currentVid.fadeOut();
+    }
     currentVid = tmpVid;
     def.resolve(currentVid);
   });
-  if(currentVid){
-    currentVid.fadeOut();
-  }
 
   return def.promise();
 };
