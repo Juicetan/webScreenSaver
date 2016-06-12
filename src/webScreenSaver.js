@@ -128,12 +128,29 @@ var startWindowMonitor = function(){
   });
 };
 
+var startControlMonitor = function(){
+  $(window).on('keydown',function(e){
+    var keycode = e.which;
+    if(keycode === 32){//space
+      if(!currentVid){
+        startSaver();
+      } else{
+        stopSaver();
+      }
+    } else if(keycode === 39 && currentVid){//right
+      toggleVideos();
+    }
+  });
+};
+
 $['webScreenSaver'] = function(opts){
   config = $.extend({},defaults,opts);
 
   stagnantTimeout = null;
   if(config.stagnantTrigger){
     startWindowMonitor();
+  } else{
+    startControlMonitor();
   }
 
   return this;
