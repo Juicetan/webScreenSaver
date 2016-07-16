@@ -176,6 +176,10 @@ $['webScreenSaver'] = function(opts){
 $.fn.webScreenSaver = function(opts){
   config = $.extend({},defaults,opts);
   config.target = this;
+  $(this).css('overflow','hidden');
+  if($(this).css('position') === 'static'){
+    $(this).css('position','relative');
+  }
 
   if(!config.videos || config.videos.length <= 0){
     throw "ERROR: No videos provided.";
