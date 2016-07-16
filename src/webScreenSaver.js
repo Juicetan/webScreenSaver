@@ -3,7 +3,8 @@ var defaults = {
   videoDuration: -1,
   interval: 2*60*1000,
   stagnantDelay: 5000,
-  stagnantTrigger: true
+  stagnantTrigger: true,
+  target: $('body')
 };
 var config = {};
 var currentVid = null;
@@ -18,13 +19,9 @@ var util = {
 
 var newVidCon = function(){
   var vidCon = {
-    target: $('body'),
+    target: config.target,
     transitionDuration: 1000,
-    $:$("<video></video>",{
-      style: "min-width:100%;min-height:100%;width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
-      class: 'vidcon',
-      autoplay: 'autoplay'
-    }),
+    $:null,
     setVideo: function(vidSrcObj){
       var fragment = document.createDocumentFragment();
       var extKeys = Object.keys(vidSrcObj);
@@ -70,6 +67,22 @@ var newVidCon = function(){
       return def.promise();
     }
   };
+
+  if(vidCon.target.prop('tagName').toLowerCase() === 'body'){
+    vidCon.$ = $("<video></video>",{
+      style: "width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
+      class: 'vidcon',
+      autoplay: 'autoplay'
+    });
+  } else{
+    var height = vidCon.target.outerWidth() >= vidCon.target.outerHeight()?'100%':'auto';
+    var width = height === 'auto'?'100%':'auto';
+    vidCon.$ = $("<video></video>",{
+      style: "width: "+width+";height: "+height+";position: absolute;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
+      class: 'vidcon',
+      autoplay: 'autoplay'
+    });
+  }
 
   return vidCon;
 };
@@ -145,6 +158,32 @@ var startControlMonitor = function(){
 
 $['webScreenSaver'] = function(opts){
   config = $.extend({},defaults,opts);
+
+  if(!config.videos || config.videos.length <= 0){
+    throw "ERROR: No videos provided.";
+  }
+
+  stagnantTimeout = null;
+  if(config.stagnantTrigger){
+    startWindowMonitor();
+  } else{
+    startControlMonitor();
+  }
+
+  return this;
+};
+
+$.fn.webScreenSaver = function(opts){
+  config = $.extend({},defaults,opts);
+  config.target = this;
+  $(this).css('overflow','hidden');
+  if($(this).css('position') === 'static'){
+    $(this).css('position','relative');
+  }
+
+  if(!config.videos || config.videos.length <= 0){
+    throw "ERROR: No videos provided.";
+  }
 
   stagnantTimeout = null;
   if(config.stagnantTrigger){
