@@ -21,11 +21,7 @@ var newVidCon = function(){
   var vidCon = {
     target: config.target,
     transitionDuration: 1000,
-    $:$("<video></video>",{
-      style: "min-width:100%;min-height:100%;width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
-      class: 'vidcon',
-      autoplay: 'autoplay'
-    }),
+    $:null,
     setVideo: function(vidSrcObj){
       var fragment = document.createDocumentFragment();
       var extKeys = Object.keys(vidSrcObj);
@@ -71,6 +67,22 @@ var newVidCon = function(){
       return def.promise();
     }
   };
+
+  if(vidCon.target.prop('tagName').toLowerCase() === 'body'){
+    vidCon.$ = $("<video></video>",{
+      style: "width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
+      class: 'vidcon',
+      autoplay: 'autoplay'
+    });
+  } else{
+    var height = vidCon.target.outerWidth() >= vidCon.target.outerHeight()?'100%':'auto';
+    var width = height === 'auto'?'100%':'auto';
+    vidCon.$ = $("<video></video>",{
+      style: "width: "+width+";height: "+height+";position: absolute;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
+      class: 'vidcon',
+      autoplay: 'autoplay'
+    });
+  }
 
   return vidCon;
 };
