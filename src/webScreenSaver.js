@@ -159,6 +159,10 @@ var startControlMonitor = function(){
 $['webScreenSaver'] = function(opts){
   config = $.extend({},defaults,opts);
 
+  if(!config.videos || config.videos.length <= 0){
+    throw "ERROR: No videos provided.";
+  }
+
   stagnantTimeout = null;
   if(config.stagnantTrigger){
     startWindowMonitor();
@@ -172,6 +176,10 @@ $['webScreenSaver'] = function(opts){
 $.fn.webScreenSaver = function(opts){
   config = $.extend({},defaults,opts);
   config.target = this;
+
+  if(!config.videos || config.videos.length <= 0){
+    throw "ERROR: No videos provided.";
+  }
 
   stagnantTimeout = null;
   if(config.stagnantTrigger){
