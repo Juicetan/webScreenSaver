@@ -3,7 +3,8 @@ var defaults = {
   videoDuration: -1,
   interval: 2*60*1000,
   stagnantDelay: 5000,
-  stagnantTrigger: true
+  stagnantTrigger: true,
+  target: $('body')
 };
 var config = {};
 var currentVid = null;
@@ -18,7 +19,7 @@ var util = {
 
 var newVidCon = function(){
   var vidCon = {
-    target: $('body'),
+    target: config.target,
     transitionDuration: 1000,
     $:$("<video></video>",{
       style: "min-width:100%;min-height:100%;width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;",
@@ -145,6 +146,20 @@ var startControlMonitor = function(){
 
 $['webScreenSaver'] = function(opts){
   config = $.extend({},defaults,opts);
+
+  stagnantTimeout = null;
+  if(config.stagnantTrigger){
+    startWindowMonitor();
+  } else{
+    startControlMonitor();
+  }
+
+  return this;
+};
+
+$.fn.webScreenSaver = function(opts){
+  config = $.extend({},defaults,opts);
+  config.target = this;
 
   stagnantTimeout = null;
   if(config.stagnantTrigger){
