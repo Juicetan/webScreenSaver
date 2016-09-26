@@ -48,8 +48,8 @@ This plugin can be used to enable a rotating video screensaver after a specified
 | Name | Example | Description |
 | ---- | ------- | ----------- |
 | videos | `[{mp4:'//abc.com/video.mp4',webm:'//abc.com/video.webm'}]` | An array of video objects containing a key value mapping of file type and file URL |
-| stagnantTrigger | `true` | Flag indicating if the screensaver will activate based on the absence of user activity on the page. |
+| stagnantTrigger | `true` | Flag indicating if the screensaver will activate based on the absence of user activity on the page otherwise keyboard events will act as the trigger. Default is `true`. |
 | stagnantDelay | `5000` | Time in milliseconds of user inactivity before screensaver will trigger if `stagnantTrigger` is `true`. |
 | interval | `120000` | Time in milliseconds each video should play for before switching to the next video in the provided `videos` array. If the actual video duration is shorter than the specified interval then the actual video length will be the interval length. |
-| triggerKeycode | `32` | Keycode of the keyboard key that will trigger the start and stop of the screensaver.  Default is the spacebar indicated by keycode `32` |
-| nextVidKeycode | `39` | Keycode of the the keyboard key that will trigger the switch to the next video of the screensaver.  Default is the right arrow key indicated by the keycode `39` |
+| triggerKeycode | `32` | Keycode of the keyboard key that will trigger the start and stop of the screensaver.  Default is the spacebar indicated by keycode `32`.  Only applicable if `stagnantTrigger` is `false`. |
+| nextVidKeycode | `39` | Keycode of the the keyboard key that will trigger the switch to the next video of the screensaver.  Default is the right arrow key indicated by the keycode `39`.  Only applicable if `stagnantTrigger` is `false`. |
