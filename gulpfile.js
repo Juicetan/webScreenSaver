@@ -68,6 +68,7 @@ gulp.task('watchChanges',function(){
   startLiveReloadServer();
 
   gulp.watch(paths.workingDir+paths.scripts,changeDetected);
+  gulp.watch(paths.testPage,changeDetected);
 });
 
 gulp.task('serve',function(callback){
