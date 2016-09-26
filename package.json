@@ -2,7 +2,7 @@
   "author": "Justin Lam",
   "name": "webscreensaver",
   "version": "0.0.1",
-  "description": "A jQuery web based screensaver that rotates through specified videos.",
+  "description": "A jQuery plugin to create a video screensaver experience within the browser.",
   "main": "src/webScreenSaver.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
