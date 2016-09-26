@@ -4,7 +4,9 @@ var defaults = {
   interval: 2*60*1000,
   stagnantDelay: 5000,
   stagnantTrigger: true,
-  target: $('body')
+  target: $('body'),
+  triggerKeycode: 32,
+  nextVidKeycode: 39,
 };
 var config = {};
 var currentVid = null;
@@ -144,13 +146,13 @@ var startWindowMonitor = function(){
 var startControlMonitor = function(){
   $(window).on('keydown',function(e){
     var keycode = e.which;
-    if(keycode === 32){//space
+    if(keycode === config.triggerKeycode){//space
       if(!currentVid){
         startSaver();
       } else{
         stopSaver();
       }
-    } else if(keycode === 39 && currentVid){//right
+    } else if(keycode === config.nextVidKeycode && currentVid){//right
       toggleVideos();
     }
   });
