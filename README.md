@@ -5,7 +5,7 @@ This plugin can be used to enable a rotating video screensaver after a specified
 
 <a href="https://nodei.co/npm/webscreensaver/"><img src="https://nodei.co/npm/webscreensaver.png?downloads=true&downloadRank=true&stars=true"></a>
 
-##Getting Started
+## Getting Started
 
 1. Fetch the plugin
 
@@ -44,7 +44,8 @@ This plugin can be used to enable a rotating video screensaver after a specified
   });
   ```
 
-##Options
+## Options
+
 | Name | Example | Description |
 | ---- | ------- | ----------- |
 | videos | `[{mp4:'//abc.com/video.mp4',webm:'//abc.com/video.webm'}]` | An array of video objects containing a key value mapping of file type and file URL |
