@@ -1,4 +1,4 @@
-# webScreenSaver
+# webscreensaver
 A vanilla JavaScript library to create a video screensaver experience within the browser.
 
 This library can be used to enable a rotating video screensaver after a specified duration since the last detection of user activity.  By default the screensaver will fade in a random video from a specified set defined during initialization that will encompass the entire browser window.  Alternatively the plugin can be initialized on a particular `<div/>` and will feature screensaver functionality within said `<div/>`.  The option also exists to control the rotating screensaver via manual keyboard shortcuts.
@@ -16,7 +16,7 @@ This library can be used to enable a rotating video screensaver after a specifie
 1. Fetch the plugin
 
   ```shell
-  $ npm install webScreenSaver
+  $ npm install webscreensaver
   ```
 
 2. Include the plugin
