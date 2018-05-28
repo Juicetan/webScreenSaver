@@ -1,2 +1,2 @@
-;(function(window,document,Math,$,undefined) {
+;(function(window,document,Math,undefined) {
   'use strict';

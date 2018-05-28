@@ -1,1 +1,1 @@
-})(window,document,Math,jQuery);
+})(window,document,Math);
