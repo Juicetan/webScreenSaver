@@ -1,7 +1,7 @@
 {
   "author": "Justin Lam",
   "name": "webscreensaver",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "A jQuery plugin to create a video screensaver experience within the browser.",
   "main": "src/webScreenSaver.js",
   "scripts": {
