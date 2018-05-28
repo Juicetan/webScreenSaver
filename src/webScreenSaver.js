@@ -154,6 +154,7 @@ var VidCon = (function(){
     }
     this.$.innerHTML = '';
     this.$.appendChild(fragment);
+    this.$.play();
   };
 
   VidCon.prototype.fadeIn = function(){
