@@ -189,7 +189,7 @@ var VidCon = (function(){
 
 function WebScreensaver(opts){
   this.config = extend(DEFAULTS,opts);
-  this.target = this.config.target;
+  this.target = opts.target || DEFAULTS.target;
   this.currentVid = null;
   this.stagnantTimeout = null;
   this.isRunning = false;
