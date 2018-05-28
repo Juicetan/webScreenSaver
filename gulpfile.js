@@ -53,7 +53,11 @@ gulp.task('combine', function(){
   return es.concat(
     gulp.src(codePaths)
       .pipe(concat(pluginMinifiedName))
-      .pipe(uglify())
+      .pipe(uglify({
+        mangle: {
+          reserved: ['WebScreensaver','VidCon']
+        }
+      }))
       .pipe(gulp.dest(paths.builtDir)),
     gulp.src(codePaths)
       .pipe(concat(pluginName))
