@@ -154,7 +154,6 @@ var VidCon = (function(){
     }
     this.$.innerHTML = '';
     this.$.appendChild(fragment);
-    this.$.play();
   };
 
   VidCon.prototype.fadeIn = function(){
@@ -168,6 +167,9 @@ var VidCon = (function(){
       }, this.transitionDuration);
     });
     this.target.appendChild(this.$);
+    setTimeout(function(){
+      obj.$.play();
+    },1);
 
     return def.promise;
   };
