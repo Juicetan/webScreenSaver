@@ -1,7 +1,7 @@
 {
   "author": "Justin Lam",
   "name": "webscreensaver",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A vanilla JavaScript library to create a video screensaver experience within the browser.",
   "main": "src/webScreenSaver.js",
   "scripts": {
