@@ -1,8 +1,8 @@
 {
   "author": "Justin Lam",
   "name": "webscreensaver",
-  "version": "1.0.1",
-  "description": "A jQuery plugin to create a video screensaver experience within the browser.",
+  "version": "1.0.2",
+  "description": "A vanilla JavaScript library to create a video screensaver experience within the browser.",
   "main": "src/webScreenSaver.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
