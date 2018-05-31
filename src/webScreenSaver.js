@@ -166,11 +166,11 @@ var VidCon = (function(){
       setTimeout(function(){
         def.resolve();
       }, this.transitionDuration);
+      setTimeout(function(){
+        obj.$.play();
+      },1);
     });
     this.target.appendChild(this.$);
-    setTimeout(function(){
-      obj.$.play();
-    },1);
 
     return def.promise;
   };
