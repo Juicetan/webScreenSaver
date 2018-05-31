@@ -131,6 +131,7 @@ var VidCon = (function(){
     this.$ = document.createElement('video');
     this.$.setAttribute('class','vidcon');
     this.$.setAttribute('autoplay','autoplay');
+    this.$.setAttribute('muted','muted');
     
     if(this.target.tagName.toLowerCase() === 'body'){
       this.$.setAttribute('style','width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;transition: opacity 1s linear;');
@@ -157,7 +158,6 @@ var VidCon = (function(){
     }
     this.$.innerHTML = '';
     this.$.appendChild(fragment);
-    this.$.play();
   };
 
   VidCon.prototype.fadeIn = function(){
@@ -169,6 +169,9 @@ var VidCon = (function(){
       setTimeout(function(){
         def.resolve();
       }, this.transitionDuration);
+      setTimeout(function(){
+        obj.$.play();
+      },1);
     });
     this.target.appendChild(this.$);
 
