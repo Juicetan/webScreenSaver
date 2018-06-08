@@ -128,6 +128,7 @@ var VidCon = (function(){
     this.$ = document.createElement('video');
     this.$.setAttribute('class','vidcon');
     this.$.setAttribute('autoplay','autoplay');
+    this.$.setAttribute('muted','muted');
     this.$.muted = true;
     
     if(this.target.tagName.toLowerCase() === 'body'){
