@@ -129,18 +129,24 @@ var VidCon = (function(){
     this.transitionDuration = 1000;
     
     this.$ = document.createElement('video');
-    this.$.setAttribute('class','vidcon');
+    this.$.classList.add('vidcon');
     this.$.setAttribute('autoplay','autoplay');
     this.$.setAttribute('muted','muted');
     this.$.muted = true;
     
+    this.$.style.width = '100%';
+    this.$.style.height = '100%';
+    this.$.style.objectFit = 'cover';
+    this.$.style.opacity = '0';
+    this.$.style.transition = 'opacity 1s linear';
+    this.$.style.top = 0;
+    this.$.style.bottom = 0;
+    this.$.style.left = 0;
+    this.$.style.right = 0;
     if(this.target.tagName.toLowerCase() === 'body'){
-      this.$.setAttribute('style','width: auto;height: auto;position: fixed;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;transition: opacity 1s linear;');
+      this.$.style.position = 'fixed';
     } else{
-      var boundingRect = this.target.getBoundingClientRect();
-      var height = boundingRect.width >= boundingRect.height?'100%':'auto';
-      var width = height === 'auto'?'100%':'auto';
-      this.$.setAttribute('style','width: '+width+';height: '+height+';position: absolute;top: 50%;left: 50%;transform: translate3d(-50%,-50%,0);opacity:0;transition: opacity 1s linear;');
+      this.$.style.position = 'absolute';
     }
   }
 
