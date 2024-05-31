@@ -1,11 +1,10 @@
 var gulp = require('gulp');
-var gutil = require('gulp-util');
-var clean = require('gulp-clean');
-var uglify = require('gulp-uglify');
+var clean = require('del');
+var uglifyjs = require('uglify-js');
+var gulpUglify = require('gulp-uglify/composer');
+var uglify = gulpUglify(uglifyjs);
 var concat = require('gulp-concat');
 var rename = require('gulp-rename');
-var es = require('event-stream');
-var runSync = require('run-sequence');
 var browserSync = require('browser-sync').create();
 
 var paths = {
@@ -35,46 +34,51 @@ var startLiveReloadServer = function(){
 var changeDetected = function(file){
   console.log('> change detected',file);
 
-  runSync('combine',function(){
+  gulp.series(gulp.task('combine'))(function(){
     browserSync.reload();
   });
 };
 
 gulp.task('clean',function(){
-  return es.concat(
-    gulp.src(paths.buildDir).pipe(clean()),
-    gulp.src(paths.builtDir).pipe(clean())
-  );
+  return clean([
+    paths.buildDir,
+    paths.buildDir
+  ]);
 });
 
-gulp.task('combine', function(){
-  var codePaths = [paths.startCode, paths.scripts, paths.endCode];
-
-  return es.concat(
-    gulp.src(codePaths)
+const codePaths = [paths.startCode, paths.scripts, paths.endCode];
+gulp.task('combine', gulp.parallel(
+  function(){
+    return gulp.src(codePaths)
       .pipe(concat(pluginMinifiedName))
       .pipe(uglify({
         mangle: {
           reserved: ['WebScreensaver','VidCon']
         }
       }))
-      .pipe(gulp.dest(paths.builtDir)),
-    gulp.src(codePaths)
+      .pipe(gulp.dest(paths.builtDir))
+  },
+  function(){
+    return gulp.src(codePaths)
       .pipe(concat(pluginName))
-      .pipe(gulp.dest(paths.builtDir)),
-    gulp.src(paths.testPage)
+      .pipe(gulp.dest(paths.builtDir))
+  },
+  function(){
+    return gulp.src(paths.testPage)
       .pipe(rename('index.html'))
       .pipe(gulp.dest(paths.builtDir))
-  );
-});
+  }
+));
 
 gulp.task('watchChanges',function(){
   startLiveReloadServer();
 
-  gulp.watch(paths.workingDir+paths.scripts,changeDetected);
-  gulp.watch(paths.testPage,changeDetected);
+  gulp.watch(paths.workingDir+paths.scripts).on('change', changeDetected);
+  gulp.watch(paths.testPage).on('change', changeDetected);
 });
 
-gulp.task('serve',function(callback){
-  runSync('clean', 'combine', 'watchChanges' ,callback);
-});
+gulp.task('dev', gulp.series(
+  gulp.task('clean'),
+  gulp.task('combine'),
+  gulp.task('watchChanges')
+));
