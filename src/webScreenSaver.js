@@ -157,6 +157,14 @@ var VidCon = (function(){
         var src = document.createElement('source');
         src.setAttribute('type', 'video/'+ext);
         src.setAttribute('src', vidSrcObj[ext]);
+        src.addEventListener('error',function(e){
+          src.dispatchEvent(new CustomEvent('sourceloadfailed', {
+            bubbles: true,
+            detail: {
+              src: vidSrcObj[ext]
+            }
+          }));
+        });
         fragment.appendChild(src);
       })(i);
     }
