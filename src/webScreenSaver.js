@@ -177,6 +177,7 @@ var VidCon = (function(){
     var def = new Deferred();
 
     this.$.addEventListener('loadeddata',function(){
+      obj.$.play().catch((e) => console.error('> autoplay prevented', e))
       obj.$.style.opacity = 1;
       setTimeout(function(){
         def.resolve();
