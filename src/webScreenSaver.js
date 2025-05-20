@@ -200,6 +200,10 @@ var VidCon = (function(){
     return def.promise;
   };
 
+  VidCon.prototype.destroy = function(){
+    this.$.remove();
+  };
+
   return VidCon;
 })();
 
@@ -249,7 +253,7 @@ WebScreensaver.prototype.startSaver = function(){
 WebScreensaver.prototype.stopSaver = function(){
   this.isRunning = false;
   if(this.currentVid){
-    this.target.removeChild(this.currentVid.$);
+    this.currentVid.destroy();
     this.currentVid = null;
   }
 };
