@@ -182,6 +182,11 @@ var VidCon = (function(){
         def.resolve();
       }, this.transitionDuration);
     });
+    this.$.addEventListener('sourceloadfailed', (e) => {
+      e.stopPropagation();
+      def.reject(e);
+    })
+
     this.target.appendChild(this.$);
 
     return def.promise;
@@ -247,6 +252,9 @@ WebScreensaver.prototype.startSaver = function(){
         saver.startSaver();
       }
     },timeout);
+  }).catch((e) => {
+    console.error('> failed to toggle videos', e);
+    saver.startSaver();
   });
 };
 
@@ -272,6 +280,9 @@ WebScreensaver.prototype.toggleVideos = function(){
     }
     saver.currentVid = tmpVid;
     def.resolve(saver.currentVid);
+  }).catch((e) => {
+    tmpVid.destroy();
+    def.reject(e);
   });
 
   return def.promise;
