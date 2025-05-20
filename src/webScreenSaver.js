@@ -199,7 +199,7 @@ var VidCon = (function(){
 
     obj.$.style.opacity = 0;
     setTimeout(function(){
-      obj.target.removeChild(obj.$);
+      obj.destroy();
       def.resolve();
     }, this.transitionDuration);
 
