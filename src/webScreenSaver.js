@@ -246,7 +246,6 @@ WebScreensaver.prototype.startSaver = function(){
   this.toggleVideos().then(function(newVid){
     var durMilli = (newVid.$.duration - newVid.$.currentTime)*1000;
     var timeout = durMilli < saver.config.interval? durMilli:saver.config.interval;
-    timeout = timeout - 5000;
     setTimeout(function(){
       if(saver.isRunning){
         saver.startSaver();
