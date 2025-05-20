@@ -160,6 +160,14 @@ var VidCon = (function(){
         var src = document.createElement('source');
         src.setAttribute('type', 'video/'+ext);
         src.setAttribute('src', vidSrcObj[ext]);
+        src.addEventListener('error',function(e){
+          src.dispatchEvent(new CustomEvent('sourceloadfailed', {
+            bubbles: true,
+            detail: {
+              src: vidSrcObj[ext]
+            }
+          }));
+        });
         fragment.appendChild(src);
       })(i);
     }
@@ -172,11 +180,17 @@ var VidCon = (function(){
     var def = new Deferred();
 
     this.$.addEventListener('loadeddata',function(){
+      obj.$.play().catch((e) => console.error('> autoplay prevented', e))
       obj.$.style.opacity = 1;
       setTimeout(function(){
         def.resolve();
       }, this.transitionDuration);
     });
+    this.$.addEventListener('sourceloadfailed', (e) => {
+      e.stopPropagation();
+      def.reject(e);
+    })
+
     this.target.appendChild(this.$);
 
     return def.promise;
@@ -188,11 +202,15 @@ var VidCon = (function(){
 
     obj.$.style.opacity = 0;
     setTimeout(function(){
-      obj.target.removeChild(obj.$);
+      obj.destroy();
       def.resolve();
     }, this.transitionDuration);
 
     return def.promise;
+  };
+
+  VidCon.prototype.destroy = function(){
+    this.$.remove();
   };
 
   return VidCon;
@@ -232,19 +250,21 @@ WebScreensaver.prototype.startSaver = function(){
   this.toggleVideos().then(function(newVid){
     var durMilli = (newVid.$.duration - newVid.$.currentTime)*1000;
     var timeout = durMilli < saver.config.interval? durMilli:saver.config.interval;
-    timeout = timeout - 5000;
     setTimeout(function(){
       if(saver.isRunning){
         saver.startSaver();
       }
     },timeout);
+  }).catch((e) => {
+    console.error('> failed to toggle videos', e);
+    saver.startSaver();
   });
 };
 
 WebScreensaver.prototype.stopSaver = function(){
   this.isRunning = false;
   if(this.currentVid){
-    this.target.removeChild(this.currentVid.$);
+    this.currentVid.destroy();
     this.currentVid = null;
   }
 };
@@ -263,6 +283,9 @@ WebScreensaver.prototype.toggleVideos = function(){
     }
     saver.currentVid = tmpVid;
     def.resolve(saver.currentVid);
+  }).catch((e) => {
+    tmpVid.destroy();
+    def.reject(e);
   });
 
   return def.promise;
